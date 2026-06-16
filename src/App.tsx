@@ -671,21 +671,27 @@ function TodayView({
 
   useEffect(() => {
     if (reviewDeck.length) return
+    /* eslint-disable react-hooks/set-state-in-effect -- Resetting the card cursor after queue changes is intentional here. */
     setIndex(0)
     setFlipped(false)
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, [dueWords.length, reviewDeck.length])
 
   useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect -- Resetting local review state after switching word sets is intentional here. */
     setIndex(0)
     setFlipped(false)
     setReviewDeck([])
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, [wordIdsKey])
 
   useEffect(() => {
     if (words.length && !dueWords.length && reviewDeck.length === 0) {
+      /* eslint-disable react-hooks/set-state-in-effect -- Building a fallback review deck from current words is intentional here. */
       setReviewDeck(createReviewDeck(words))
       setIndex(0)
       setFlipped(false)
+      /* eslint-enable react-hooks/set-state-in-effect */
     }
   }, [dueWords.length, reviewDeck.length, words])
 
@@ -1063,6 +1069,7 @@ function ReadingView({
   useEffect(() => {
     if (!activeReadings.some((reading) => reading.id === activeReadingId)) {
       const nextReadingId = activeReadings[0]?.id ?? ''
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- Keep the selected reading valid after collection changes.
       if (activeReadingId !== nextReadingId) setActiveReadingId(nextReadingId)
     }
   }, [activeReadingId, activeReadings])
@@ -1271,6 +1278,7 @@ function ImportView({
   const [newCollectionName, setNewCollectionName] = useState('')
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Keep the import target aligned with the selected collection.
     setTargetCollectionId(activeCollectionId)
   }, [activeCollectionId])
 
